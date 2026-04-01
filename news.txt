@@ -1,0 +1,4 @@
+Welcome to ZenithOS Node!
+[2026-04-01] NetPM system is officially online.
+[2026-04-01] Added 'namehi' package for testing.
+Enjoy your cloud-powered OS!
