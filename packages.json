@@ -3,5 +3,10 @@
     "name": "namehi",
     "desc": "Official Zenith Welcome Script",
     "ver": "1.0"
+  },
+  {
+    "name": "nano",
+    "desc": "GNU Nano editor",
+    "ver": "2.7.0"
   }
 ]
