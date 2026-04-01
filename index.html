@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZenithOS | Terminal Repository</title>
+    <style>
+        /* Ретро-индустриальный стиль */
+        body { 
+            background-color: #121212; 
+            color: #d1d1d1; 
+            font-family: "Lucida Console", Monaco, monospace; 
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container { 
+            width: 100%;
+            max-width: 900px; 
+            border: 1px solid #333; 
+            padding: 25px; 
+            box-shadow: 8px 8px 0px #000;
+            background-color: #1a1a1a;
+        }
+
+        header { 
+            border-bottom: 2px solid #00ffff; 
+            margin-bottom: 20px; 
+            padding-bottom: 15px; 
+        }
+
+        h1 { 
+            color: #00ffff; 
+            font-size: 1.6em; 
+            margin: 0; 
+            text-transform: uppercase; 
+            letter-spacing: 3px; 
+            text-shadow: 2px 2px 0px #004444;
+        }
+
+        .status-bar { 
+            background-color: #222; 
+            padding: 8px 12px; 
+            font-size: 0.85em; 
+            color: #00ff00; /* Матричный зеленый для статуса */
+            margin-bottom: 25px;
+            border-left: 4px solid #00ff00;
+        }
+
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 10px;
+        }
+
+        th { 
+            text-align: left; 
+            border-bottom: 1px solid #444; 
+            padding: 12px; 
+            color: #00ffff; 
+            text-transform: uppercase;
+            font-size: 0.9em;
+        }
+
+        td { 
+            padding: 12px; 
+            border-bottom: 1px solid #252525; 
+            font-size: 0.95em;
+        }
+
+        .code-path { 
+            color: #ffca28; /* Желтый для путей, как в IDE */
+            word-break: break-all;
+            font-size: 0.85em;
+        }
+
+        .type-tag {
+            color: #888;
+            margin-right: 10px;
+        }
+
+        footer { 
+            margin-top: 50px; 
+            font-size: 0.75em; 
+            color: #444; 
+            text-align: center; 
+            border-top: 1px solid #333; 
+            padding-top: 15px; 
+            letter-spacing: 1px;
+        }
+
+        /* Анимация загрузки */
+        .loading {
+            color: #ffca28;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Zenith Distribution Node</h1>
+    </header>
+
+    <div class="status-bar" id="stat-text">
+        SYSTEM: BOOTING... | CONNECTING TO GITHUB API...
+    </div>
+
+    <p style="margin-bottom: 30px;">
+        Автоматическое сканирование директории <code style="color:#00ffff;">/raw/</code>. 
+        Используйте <code>netinstall [имя]</code> в ZenithOS для загрузки.
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 25%;">Package</th>
+                <th style="width: 15%;">Size</th>
+                <th style="width: 60%;">Network URL (Raw)</th>
+            </tr>
+        </thead>
+        <tbody id="repo-table">
+            <tr>
+                <td colspan="3" class="loading">Загрузка данных из репозитория...</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <footer>
+        &lt; ZENITH_OS_PROJECT // SOURCE_MODE: GITHUB_PAGES // NO_JS_LIBS_USED &gt;
+    </footer>
+</div>
+
+<script>
+    // === КОНФИГУРАЦИЯ — ПОДСТАВЬ СВОИ ДАННЫЕ ===
+    const GH_USER = 'dexlgm'; 
+    const GH_REPO = 'netPM';
+    const RAW_PATH = 'raw'; 
+    // ==========================================
+
+    const apiUrl = `https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${RAW_PATH}`;
+    const tableBody = document.getElementById('repo-table');
+    const statText = document.getElementById('stat-text');
+
+    async function loadRepo() {
+        try {
+            const response = await fetch(apiUrl);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP Error: ${response.status}`);
+            }
+
+            const data = await response.json();
+            const files = data.filter(item => item.type === 'file');
+
+            tableBody.innerHTML = ''; // Очистка загрузки
+
+            if (files.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="3" style="text-align:center;">Директория /raw/ пуста.</td></tr>';
+            } else {
+                files.forEach(file => {
+                    const sizeKB = (file.size / 1024).toFixed(1);
+                    const rawUrl = `https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/main/${RAW_PATH}/${file.name}`;
+                    
+                    const row = `
+                        <tr>
+                            <td><span class="type-tag">[EXE]</span>${file.name}</td>
+                            <td>${sizeKB} KB</td>
+                            <td class="code-path">${rawUrl}</td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                });
+            }
+
+            statText.innerText = `NODE: ONLINE | PACKAGES: ${files.length} | HOST: GITHUB_PAGES`;
+            statText.style.color = "#00ff00";
+
+        } catch (error) {
+            console.error("Repo Load Error:", error);
+            tableBody.innerHTML = `<tr><td colspan="3" style="color:#ff4444; text-align:center;">Ошибка подключения к API: ${error.message}</td></tr>`;
+            statText.innerText = "NODE ERROR: CONNECTION FAILED";
+            statText.style.color = "#ff4444";
+            statText.style.borderLeftColor = "#ff4444";
+        }
+    }
+
+    // Запуск
+    loadRepo();
+</script>
+
+</body>
+</html>
