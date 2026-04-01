@@ -1,0 +1,6 @@
+#!/bin/sh
+echo "Hi from Zenith!"
+echo "if you see it, you test netinstall, rigth?"
+echo "good bye!"
+sleep 1
+echo "exited with code: 0"
