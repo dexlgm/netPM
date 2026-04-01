@@ -8,5 +8,70 @@
     "name": "nano",
     "desc": "GNU Nano editor",
     "ver": "2.7.0"
-  }
+  },
+  {
+  "name": "nano",
+  "desc": "Standard terminal text editor",
+  "ver": "2.x"
+},
+{
+  "name": "python",
+  "desc": "Python 2.7 interpreter (static)",
+  "ver": "2.7.1"
+},
+{
+  "name": "nmap",
+  "desc": "Network exploration tool & security scanner",
+  "ver": "static"
+},
+{
+  "name": "ncat",
+  "desc": "Concatenate and redirect sockets",
+  "ver": "static"
+},
+{
+  "name": "readelf",
+  "desc": "Displays information about ELF files",
+  "ver": "binutils"
+},
+{
+  "name": "strings",
+  "desc": "Print the strings of printable characters in files",
+  "ver": "binutils"
+},
+{
+  "name": "ar",
+  "desc": "Create, modify, and extract from archives",
+  "ver": "binutils"
+},
+{
+  "name": "nm",
+  "desc": "List symbols from object files",
+  "ver": "binutils"
+},
+{
+  "name": "objdump",
+  "desc": "Display information from object files",
+  "ver": "binutils"
+},
+{
+  "name": "size",
+  "desc": "List section sizes and total size",
+  "ver": "binutils"
+},
+{
+  "name": "socat",
+  "desc": "Multipurpose relay (SOcket CAT)",
+  "ver": "static"
+},
+{
+  "name": "yasm",
+  "desc": "Modular assembler (JSW & NASM rewrite)",
+  "ver": "1.3.0"
+},
+{
+  "name": "ag",
+  "desc": "The Silver Searcher (faster than grep)",
+  "ver": "static"
+}
 ]
