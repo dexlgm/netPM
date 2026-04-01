@@ -9,11 +9,6 @@
     "desc": "GNU Nano editor",
     "ver": "2.7.0"
   },
-  {
-  "name": "nano",
-  "desc": "Standard terminal text editor",
-  "ver": "2.x"
-},
 {
   "name": "python",
   "desc": "Python 2.7 interpreter (static)",
